@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Babylon.js sample code</title>
+
+    <!-- Babylon.js -->
+    <script src="./js/babylon.js"></script>
+    <script src="./js/babylonjs.loaders.min.js"></script>
+    <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <style>
+      html,
+      body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+      .tab {
+        position: absolute;
+        bottom: 100px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .tab-item {
+        color: #fff;
+        padding: 5rem 10rem;
+        background: rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="renderCanvas"></canvas>
+    <div class="tab">
+      <div class="tab-item" id="tab0">tab0</div>
+      <div class="tab-item" id="tab1">tab1</div>
+    </div>
+    <script>
+      BABYLON.SceneLoader.ShowLoadingScreen = false;
+      const canvas = document.getElementById("renderCanvas");
+      const tab0 = document.getElementById("tab0");
+      const tab1 = document.getElementById("tab1");
+      let type = getParam()["type"] || "obj";
+
+      let rootUrl = {
+        obj: "./room/OBJ1/",
+        gltf: "./ktx2room/",
+      }[type];
+      let modelUrl = {
+        obj: "index.obj",
+        gltf: "whwd.gltf",
+      }[type];
+      let engine = null;
+      let scene = null;
+      let model = null;
+      let myMaterial = null;
+      var lines = [];
+      let sceneToRender = null;
+      let createDefaultEngine = function() {
+        return new BABYLON.Engine(
+          canvas,
+          false,
+          {
+            preserveDrawingBuffer: true,
+            stencil: true,
+            disableWebGL2Support: false,
+            doNotHandleContextLost: true,
+          },
+          false
+        );
+      };
+      let delayCreateScene = function() {
+        // Create a scene.
+        scene = new BABYLON.Scene(engine);
+        scene.clearCachedVertexData();
+        scene.cleanCachedTextureBuffer();
+        // Instrumentation
+
+        // let material = new BABYLON.StandardMaterial("kosh", scene);
+        // material.unfreeze();
+
+        // The default camera looks at the back of the asset.
+        // Rotate the camera by 180 degrees to the front of the asset.
+
+        updateModel();
+        return scene;
+      };
+      function updateModel() {
+        if (model) {
+          model.dispose();
+          model = null;
+        }
+
+        scene.rootNodes = [];
+        scene.skeletons = [];
+        scene.morphTargetManagers = [];
+        scene.meshes = [];
+        scene.textures = [];
+        scene.materials = [];
+        scene.geometries = [];
+        scene.transformNodes = [];
+        lines = [];
+
+        BABYLON.SceneLoader.Append(rootUrl, modelUrl, scene, function(scene) {
+          // Append glTF model to scene.
+          scene.createDefaultCameraOrLight(true, true, true);
+
+          scene.activeCamera.alpha += Math.PI;
+          model = new BABYLON.Mesh("model", scene);
+          model.doNotSyncBoundingInfo = true;
+
+          // updateLines();
+          // Create a default arc rotate camera and light.
+        });
+      }
+
+      initFunction = async function() {
+        let asyncEngineCreation = async function() {
+          try {
+            return createDefaultEngine();
+          } catch (e) {
+            console.log(
+              "the available createEngine function failed. Creating the default engine instead"
+            );
+            return createDefaultEngine();
+          }
+        };
+
+        engine = await asyncEngineCreation();
+        engine.enableOfflineSupport = false;
+        console.log(engine);
+        if (!engine) throw "engine should not be null.";
+        scene = delayCreateScene();
+      };
+      initFunction().then(() => {
+        sceneToRender = scene;
+        var instrumentation = new BABYLON.EngineInstrumentation(engine);
+        instrumentation.captureGPUFrameTime = true;
+        instrumentation.captureShaderCompilationTime = true;
+        var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
+          "UI"
+        );
+        var stackPanel = new BABYLON.GUI.StackPanel();
+        stackPanel.verticalAlignment =
+          BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        stackPanel.isVertical = true;
+        advancedTexture.addControl(stackPanel);
+        var text1 = new BABYLON.GUI.TextBlock();
+        text1.text = "";
+        text1.color = "white";
+        text1.fontSize = 16;
+        text1.height = "30px";
+        stackPanel.addControl(text1);
+
+        var text2 = new BABYLON.GUI.TextBlock();
+        text2.text = "";
+        text2.color = "white";
+        text2.fontSize = 16;
+        text2.height = "30px";
+        stackPanel.addControl(text2);
+
+        var text3 = new BABYLON.GUI.TextBlock();
+        text3.text = "";
+        text3.color = "white";
+        text3.fontSize = 16;
+        text3.height = "30px";
+        stackPanel.addControl(text3);
+
+        var text4 = new BABYLON.GUI.TextBlock();
+        text4.text = "";
+        text4.color = "white";
+        text4.fontSize = 16;
+        text4.height = "30px";
+        stackPanel.addControl(text4);
+
+        var text5 = new BABYLON.GUI.TextBlock();
+        text5.text = "";
+        text5.color = "white";
+        text5.fontSize = 16;
+        text5.height = "30px";
+        stackPanel.addControl(text5);
+        scene.registerBeforeRender(function() {
+          text1.text =
+            "current frame time (GPU): " +
+            (instrumentation.gpuFrameTimeCounter.current * 0.000001).toFixed(
+              2
+            ) +
+            "ms";
+          text2.text =
+            "average frame time (GPU): " +
+            (instrumentation.gpuFrameTimeCounter.average * 0.000001).toFixed(
+              2
+            ) +
+            "ms";
+          text3.text =
+            "total shader compilation time: " +
+            instrumentation.shaderCompilationTimeCounter.total.toFixed(2) +
+            "ms";
+          text4.text =
+            "average shader compilation time: " +
+            instrumentation.shaderCompilationTimeCounter.average.toFixed(2) +
+            "ms";
+          text5.text =
+            "compiler shaders count: " +
+            instrumentation.shaderCompilationTimeCounter.count;
+        });
+
+        engine.runRenderLoop(function() {
+          if (sceneToRender && sceneToRender.activeCamera) {
+            sceneToRender.render();
+          }
+        });
+      });
+      tab0.addEventListener("click", () => {
+        rootUrl = {
+          obj: "./room/OBJ1/",
+          gltf: "./ktx2room/",
+        }[type];
+        modelUrl = {
+          obj: "index.obj",
+          gltf: "whwd.gltf",
+        }[type];
+        updateModel();
+        console.log(scene);
+      });
+      tab1.addEventListener("click", () => {
+        rootUrl = {
+          obj: "./room/OBJ2/",
+          gltf: "./ktx2room/",
+        }[type];
+
+        modelUrl = {
+          obj: "index.obj",
+          gltf: "room2.gltf",
+        }[type];
+
+        updateModel();
+        console.log(scene);
+      });
+      // Resize
+      window.addEventListener("resize", function() {
+        engine.resize();
+      });
+      function getParam() {
+        //get query string without the initial ?
+        var qs = location.search.length > 0 ? location.search.substring(1) : "",
+          //object to hold data
+          args = {},
+          //get individual items
+          items = qs.length ? qs.split("&") : [],
+          item = null,
+          name = null,
+          value = null,
+          //used in for loop
+          i = 0,
+          len = items.length;
+        //assign each item onto the args object
+        for (i = 0; i < len; i++) {
+          item = items[i].split("=");
+          name = decodeURIComponent(item[0]);
+          value = decodeURIComponent(item[1]);
+
+          if (name.length) {
+            args[name] = value;
+          }
+        }
+        return args;
+      }
+    </script>
+  </body>
+</html>
