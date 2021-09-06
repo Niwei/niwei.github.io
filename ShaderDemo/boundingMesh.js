@@ -23,7 +23,7 @@ function boundingMesh(bounding, offset = defaultOffsetVector) {
         bounding.max.y - bounding.min.y + offset.y * 2,
         bounding.max.z - bounding.min.z + offset.z * 2
     );
-    geometry.applyMatrix4(new THREE.Matrix4().makeScale(-1, 1, 1));
+    geometry.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 
     let boundingBox = new THREE.Mesh(geometry, shaderMaterial);
     boundingBox.position.copy(bounding.center);

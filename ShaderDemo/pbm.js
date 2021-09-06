@@ -70,7 +70,7 @@ function createGeometry(_ref) {
         geometry.setAttribute("uv", bAttr(new Float32Array(uvs, 0, 2), 2));
     }
 
-    geometry.applyMatrix4(modelFlipMatrix);
+    geometry.applyMatrix(modelFlipMatrix);
     // geometry.rotateX(Math.PI)
 
     if (isNil(normals)) geometry.computeVertexNormals();
@@ -115,6 +115,7 @@ function loadMaterial(texturePromise) {
         defines: { USE_MAP: true, USE_UV: true },
         lights: true,
     });
+
     texturePromise.then(function (texture) {
         return (uniforms.map.value = texture);
     });

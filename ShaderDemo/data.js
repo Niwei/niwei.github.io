@@ -22,5 +22,76 @@ const data = {
             "/materials/texture_18.jpg",
         ],
     },
+    observers: [
+        {
+            active: true,
+            visible_nodes: [1],
+            accessible_nodes: [1],
+            index: 0,
+            quaternion: {
+                y: -0.9997651897362997,
+                x: -0.012720281825119634,
+                z: -0.006288872878861663,
+                w: -0.01637716507779933,
+            },
+            standing_position: [
+                4.934030055999756, -1.2677785249935138, -0.6899620294570923,
+            ],
+            position: [
+                4.934030055999756, 0.09541799694299699, -0.6899620294570923,
+            ],
+            floor_index: 0,
+            offset_point_count: 286,
+            work_code: "ZBgxP9kmprQ3RNnl",
+        },
+        {
+            active: true,
+            visible_nodes: [0],
+            accessible_nodes: [0],
+            index: 1,
+            quaternion: {
+                y: -0.9992836755890794,
+                x: -0.010064809884088649,
+                z: 0.000572260349388714,
+                w: -0.03647597451122458,
+            },
+            standing_position: [
+                3.5181500911712646, -1.266938076911004, -0.9114059805870056,
+            ],
+            position: [
+                3.5181500911712646, 0.10566229939460756, -0.9114059805870056,
+            ],
+            floor_index: 0,
+            offset_point_count: 764,
+            work_code: "ZBgxP9kmprQ3RNnl",
+        },
+    ],
+    panorama: {
+        count: 35,
+        base_url: "/images/cube/",
+        list: [
+            {
+                active: true,
+                index: 0,
+                up: "/cube//0_u.jpg",
+                down: "/cube/0_d.jpg",
+                right: "/cube/0_r.jpg",
+                left: "/cube/0_l.jpg",
+                front: "/cube/0_f.jpg",
+                back: "/cube/0_b.jpg",
+            },
+            {
+                active: true,
+                index: 1,
+                up: "/cube/1_u.jpg",
+                down: "/cube/1_d.jpg",
+                right: "/cube/1_r.jpg",
+                left: "/cube/1_l.jpg",
+                front: "/cube/1_f.jpg",
+                back: "/cube//1_b.jpg",
+            },
+        ],
+        work_code: "ZBgxP9kmprQ3RNnl",
+    },
 };
 window.__module__data = data;

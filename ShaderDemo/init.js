@@ -12,4 +12,7 @@ const _app = new app({
         size: 800,
     },
 });
+
 _app.load(window.__module__data);
+_app.appendTo(document.getElementById("container"));
+console.log(_app.scene);
