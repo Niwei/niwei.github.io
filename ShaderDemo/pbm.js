@@ -110,7 +110,10 @@ function loadMaterial(texturePromise) {
 
     const shaderMaterial = new THREE.ShaderMaterial({
         vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
+        fragmentShader: [
+            THREE.ShaderChunk["normal_pars_fragment"],
+            fragmentShader,
+        ].join("\n"),
         uniforms: uniforms,
         //defines: { USE_MAP: true, USE_UV: true },
         lights: true,

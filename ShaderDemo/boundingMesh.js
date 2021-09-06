@@ -13,7 +13,10 @@ function boundingMesh(bounding, offset = defaultOffsetVector) {
 
     let shaderMaterial = new THREE.ShaderMaterial({
         vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
+        fragmentShader: [
+            THREE.ShaderChunk["normal_pars_fragment"],
+            fragmentShader,
+        ].join("\n"),
         uniforms: _uniforms,
         lights: true,
     });
