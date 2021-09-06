@@ -1,0 +1,159 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no"
+        />
+        <meta name="applicable-device" content="mobile" />
+        <meta http-equiv="cleartype" content="on" />
+        <meta http-equiv="Cache-Control" content="no-transform" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="renderer" content="webkit" />
+        <script>
+            window.pageStartTime = Date.now();
+        </script>
+        <style>
+            .viewport {
+                width: 100%;
+                height: 100%;
+                position: relative;
+            }
+        </style>
+        <script type="text/javascript">
+            (function (f, i) {
+                var b = i.documentElement;
+                var e = f.navigator.appVersion;
+                var g = e.match(/android/gi);
+                var c = e.match(/iphone/gi);
+                var k = f.devicePixelRatio;
+                var j = 1,
+                    d = 1;
+                if (c) {
+                    if (k >= 3) {
+                        j = 3;
+                    } else {
+                        if (k >= 2) {
+                            j = 2;
+                        } else {
+                            j = 1;
+                        }
+                    }
+                } else {
+                    j = 1;
+                }
+                if (parent !== self) j = 1;
+                d = 1 / j;
+                var h = i.querySelector('meta[name="viewport"]');
+                if (!h) {
+                    h = i.createElement("meta");
+                    h.setAttribute("name", "viewport");
+                    if (b.firstElementChild) {
+                        b.firstElementChild.appendChild(h);
+                    } else {
+                        var a = i.createElement("div");
+                        a.appendChild(h);
+                        i.write(a.innerHTML);
+                    }
+                }
+                if (j) {
+                    h.setAttribute(
+                        "content",
+                        "width=device-width, initial-scale=" +
+                            d +
+                            ", maximum-scale=" +
+                            d +
+                            ", minimum-scale=" +
+                            d +
+                            ", user-scalable=no, viewport-fit=cover"
+                    );
+                    b.style.fontSize = 16 * j + "px";
+                }
+                window.DPR = j;
+            })(window, document);
+        </script>
+
+        <script>
+            window.__staticBase__ = "http://127.0.0.1:3000/";
+        </script>
+    </head>
+    <body>
+        <script>
+            (function () {
+                var minWidth = 370,
+                    width = window.innerWidth / DPR;
+                if (width >= minWidth) return;
+                window.ScaleDPR = DPR;
+                DPR = (width / minWidth) * DPR;
+                document.documentElement.style.fontSize = 16 * DPR + "px";
+            })();
+        </script>
+        <script>
+            (function () {
+                var canWebGL = (function () {
+                    var canvas = document.createElement("canvas");
+                    try {
+                        return !!(
+                            window.WebGLRenderingContext &&
+                            (canvas.getContext("webgl") ||
+                                canvas.getContext("experimental-webgl"))
+                        );
+                    } catch (error) {
+                        return false;
+                    }
+                })();
+                if (!canWebGL)
+                    alert(
+                        "抱歉，您的浏览器不支持 WEBGL 特征，导致3d场景无法渲染。请更换浏览器或者设备尝试。"
+                    );
+            })();
+        </script>
+        <div id="app" class="app shell" layout="app">
+            <div class="app-back" layout="app-back">
+                <div class="viewport" id="container" module="viewport"></div>
+            </div>
+            <div class="app-front" layout="app-front"></div>
+            <div class="opening" module="opening">
+                <div class="opening-bg js-bg"></div>
+                <div class="opening-cover"></div>
+                <div
+                    class="
+                        opening-animation
+                        animated
+                        ani-fadeIn ani-duration-500
+                    "
+                    style="display: none"
+                ></div>
+                <div
+                    class="
+                        opening-progress
+                        animated
+                        ani-fadeIn ani-duration-500
+                    "
+                    style="display: none"
+                >
+                    <span class="js-progress"></span>
+                </div>
+            </div>
+        </div>
+
+        <script src="data.js"></script>
+        <script>
+            window.libFiveStart = Date.now();
+        </script>
+
+        <script>
+            window.libFiveEnd = Date.now();
+        </script>
+        <script>
+            window.pageMainEntryStart = Date.now();
+        </script>
+        <script crossorigin="anonymous" type="module" src="init.js"></script>
+        <script>
+            window.pageMainEntryEnd = Date.now();
+        </script>
+    </body>
+</html>
