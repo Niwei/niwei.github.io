@@ -70,7 +70,7 @@ function createGeometry(_ref) {
         geometry.setAttribute("uv", bAttr(new Float32Array(uvs, 0, 2), 2));
     }
 
-    geometry.applyMatrix(modelFlipMatrix);
+    geometry.applyMatrix4(modelFlipMatrix);
     // geometry.rotateX(Math.PI)
 
     if (isNil(normals)) geometry.computeVertexNormals();
@@ -112,12 +112,13 @@ function loadMaterial(texturePromise) {
         vertexShader: vertexShader,
         fragmentShader: fragmentShader,
         uniforms: uniforms,
-        defines: { USE_MAP: true, USE_UV: true },
+        //defines: { USE_MAP: true, USE_UV: true },
         lights: true,
     });
 
     texturePromise.then(function (texture) {
-        return (uniforms.map.value = texture);
+        shaderMaterial.map = texture;
+        return (uniforms.map.value = shaderMaterial.map);
     });
 
     shaderMaterial._opacity = 1;
